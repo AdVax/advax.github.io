@@ -1,0 +1,28 @@
+name: Build APK
+
+on:
+  push:
+    paths:
+      - 'stores.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Bubblewrap
+        run: npm install -g @bubblewrap/cli
+
+      - name: Build APKs
+        run: node build.js
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v3
+        with:
+          name: APKs
+          path: output/*.apk
